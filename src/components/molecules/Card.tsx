@@ -125,9 +125,11 @@ export const Card: React.FC<CardProps> = memo(({ user }) => {
                     </HStack>
                 </ChakraCard.Footer>
             </ChakraCard.Root>
-                <Button mt="8" bg="teal.500">
-                    <Link to="/">ホームに戻る</Link>
-                </Button>
+                <Link to="/">
+                    <Button mt="8" bg="teal.500">
+                        ホームに戻る
+                    </Button>
+                </Link>
             </Stack>
         </Center>
     );
