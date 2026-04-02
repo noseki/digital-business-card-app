@@ -1,4 +1,4 @@
-name: TS Study Record App CI/CD Pipeline
+name: Digital Business Card App CI/CD Pipeline
 
 on:
   push:

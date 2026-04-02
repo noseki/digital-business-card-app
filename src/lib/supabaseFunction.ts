@@ -1,6 +1,7 @@
-import { supabase } from "../utills/supabase";
+import { supabase } from "../utils/supabase";
 import { User } from "../domain/user";
 
+// 名刺（ユーザー）情報取得
 export const fetchUser = async (id: string): Promise<User> => {
     const { data, error } = await supabase.from('users').select("*, skills(id, name)").eq("user_id", id).single();
     if (error) {
@@ -21,6 +22,7 @@ export const fetchUser = async (id: string): Promise<User> => {
     return userData;
 }
 
+// スキル情報取得
 export const fetchSkillOptions = async (): Promise<{ id: string; name: string }[]> => {
     const { data, error } = await supabase.from('skills').select("*");
     if (error) {
@@ -39,6 +41,7 @@ type RegisterFormData = {
     x_id?: string | null;
 }
 
+// 名刺（ユーザー）登録
 export const registerUser = async (formData: RegisterFormData): Promise<void> => {
     // usersテーブルにユーザーデータを挿入
     const { error: usersError } = await supabase.from('users').insert({
@@ -66,4 +69,51 @@ export const registerUser = async (formData: RegisterFormData): Promise<void> =>
         throw new Error(userSkillError.message);
     }
 }
+
+// 前日（日本時間00:00〜23:59:59）のusersとuser_skillデータを削除する
+export const deletePreviousUsersAndUserSkill = async () => {
+    const now = new Date();
+    const JST_OFFSET = 9 * 60 * 60 * 1000; // 日本時間 (UTC+9) のオフセット
+
+    // JSTでの現在日付を取得
+    const nowJST = new Date(now.getTime() + JST_OFFSET);
+
+    // JSTで昨日の日付を取得
+    const yesterdayJST = new Date(nowJST);
+    yesterdayJST.setUTCDate(nowJST.getUTCDate() - 1);
+
+    // JST 00:00:00 → UTC に変換 (9時間引く)
+    const startOfYesterday = new Date(
+        Date.UTC(yesterdayJST.getUTCFullYear(), yesterdayJST.getUTCMonth(), yesterdayJST.getUTCDate(), 0, 0, 0)
+        - JST_OFFSET
+    ).toISOString();
+
+    // JST 23:59:59 → UTC に変換 (9時間引く)
+    const endOfYesterday = new Date(
+        Date.UTC(yesterdayJST.getUTCFullYear(), yesterdayJST.getUTCMonth(), yesterdayJST.getUTCDate(), 23, 59, 59)
+            - JST_OFFSET
+    ).toISOString();
+
+    // user_skill テーブルから削除
+    const { error: userSkillError } = await supabase
+        .from("user_skill")
+        .delete()
+        .gte("created_at", startOfYesterday)
+        .lte("created_at", endOfYesterday);
+
+    if (userSkillError) {
+        throw new Error(userSkillError.message);
+    }
+
+    // users テーブルから削除
+    const { error: usersError } = await supabase
+        .from("users")
+        .delete()
+        .gte("created_at", startOfYesterday)
+        .lte("created_at", endOfYesterday);
+
+    if (usersError) {
+        throw new Error(usersError.message);
+    }
+};
 
