@@ -1,74 +1,52 @@
-# React + TypeScript + Vite
+# デジタル名刺アプリ
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## サービスの説明
 
-Currently, two official plugins are available:
+デジタル名刺を作成・共有できるアプリです。
+名前・自己紹介・スキル・各種SNSアカウント（GitHub/Qiita/ X）を登録し、IDで名刺を共有できます。
+※登録データは毎日自動削除されます。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+**技術スタック**
 
-## React Compiler
+- フロントエンド: React / TypeScript / Vite / Chakra UI
+- バックエンド: Supabase (DB / 認証)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 環境設定
 
-## Expanding the ESLint configuration
+前提：Node.js（推奨バージョン: 20 以上）がインストールされていること。
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+`.env_template` をコピーして `.env` を作成し、各値を設定します。
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cp .env_template .env
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+`.env` の内容:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
-# digital-business-card-app
+VITE_SUPABASE_URL=<Supabase のプロジェクトURL>
+VITE_SUPABASE_ANON_KEY=<Supabase のanon key>
+```
+
+SupabaseのURLとanon keyは、Supabaseダッシュボードの `Project Settings > API` から取得できます。
+
+## 起動方法
+
+```bash
+git clone git@github.com:noseki/digital-business-card-app.git
+cd digital-business-card-app
+
+# 依存パッケージのインストール
+npm install
+
+# 開発サーバー起動
+npm run dev
+```
+
+開発サーバーが起動したら `http://localhost:5173` にアクセスします。
+
+## アプリ使用方法
+
+1. トップページの`新規登録はこちら`より名刺情報を入力・登録
+2. `好きな英単語`として登録したIDをトップページに入力し、`名刺を見る`ボタン押下
+3. 登録した情報を名刺カードとして見ることができます
