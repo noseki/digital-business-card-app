@@ -84,14 +84,12 @@ export const deletePreviousUsersAndUserSkill = async () => {
 
     // JST 00:00:00 → UTC に変換 (9時間引く)
     const startOfYesterday = new Date(
-        Date.UTC(yesterdayJST.getUTCFullYear(), yesterdayJST.getUTCMonth(), yesterdayJST.getUTCDate(), 0, 0, 0)
-        - JST_OFFSET
+        Date.UTC(yesterdayJST.getUTCFullYear(), yesterdayJST.getUTCMonth(), yesterdayJST.getUTCDate(), 0, 0, 0) - JST_OFFSET
     ).toISOString();
 
     // JST 23:59:59 → UTC に変換 (9時間引く)
     const endOfYesterday = new Date(
-        Date.UTC(yesterdayJST.getUTCFullYear(), yesterdayJST.getUTCMonth(), yesterdayJST.getUTCDate(), 23, 59, 59)
-            - JST_OFFSET
+        Date.UTC(yesterdayJST.getUTCFullYear(), yesterdayJST.getUTCMonth(), yesterdayJST.getUTCDate(), 23, 59, 59) - JST_OFFSET
     ).toISOString();
 
     // user_skill テーブルから削除
