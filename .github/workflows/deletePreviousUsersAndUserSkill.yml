@@ -1,0 +1,30 @@
+name: Delete Previous Users And UserSkill
+
+on:
+  schedule:
+    - cron: "0 21 * * *" # 日本時間 6:00 → UTC 21:00（前日）
+  workflow_dispatch:
+
+jobs:
+  batch:
+    name: Execute Batch
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm i -D tsx
+
+      - name: Run batch file
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: npx tsx ./batch/index.ts
