@@ -2,8 +2,8 @@
 
 ## サービスの説明
 
-デジタル名刺を作成・共有できるアプリです。
-名前・自己紹介・スキル・各種SNSアカウント（GitHub/Qiita/ X）を登録し、IDで名刺を共有できます。
+デジタル名刺を作成・共有できるアプリです。<br>
+名前・自己紹介・スキル・各種SNSアカウント（GitHub/Qiita/ X）を登録し、IDで名刺を共有できます。<br>
 ※登録データは毎日自動削除されます。
 
 **技術スタック**
@@ -33,7 +33,7 @@ SupabaseのURLとanon keyは、Supabaseダッシュボードの `Project Setting
 ## 起動方法
 
 ```bash
-git clone git@github.com:noseki/digital-business-card-app.git
+git clone https://github.com/noseki/digital-business-card-app.git
 cd digital-business-card-app
 
 # 依存パッケージのインストール
